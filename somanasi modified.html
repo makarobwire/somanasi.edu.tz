@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOMA-NASI E-Learning System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .hero-bg { background-color: #f0fdf4; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <section id="login-screen" class="min-h-screen flex items-center justify-center bg-green-50">
+        <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg transform transition-transform duration-500">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-green-600">SOMA-NASI</h1>
+                <p class="text-gray-500 mt-2">Your journey starts here.</p>
+            </div>
+            <div class="mt-8 flex justify-center space-x-4">
+                <button id="login-tab" class="px-6 py-2 rounded-full font-bold bg-green-600 text-white">Login</button>
+                <button id="signup-tab" class="px-6 py-2 rounded-full font-bold text-gray-600 hover:bg-gray-200">Signup</button>
+            </div>
+            <div id="login-form-container" class="mt-6">
+                <form id="login-form">
+                    <div class="mb-4">
+                        <label for="login-email" class="block text-sm font-semibold text-gray-700">Email Address (or Username)</label>
+                        <input type="text" id="login-email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="login-password" class="block text-sm font-semibold text-gray-700">Password</label>
+                        <input type="password" id="login-password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-full hover:bg-green-700 transition duration-300">Login</button>
+                </form>
+            </div>
+            <div id="signup-form-container" class="mt-6 hidden">
+                <form id="signup-form">
+                    <div class="mb-4">
+                        <label for="signup-name" class="block text-sm font-semibold text-gray-700">Full Name</label>
+                        <input type="text" id="signup-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="signup-email" class="block text-sm font-semibold text-gray-700">Email Address</label>
+                        <input type="email" id="signup-email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="signup-password" class="block text-sm font-semibold text-gray-700">Password</label>
+                        <input type="password" id="signup-password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-full hover:bg-green-700 transition duration-300">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="main-app-content" class="hidden">
+        <header id="header" class="bg-white/80 backdrop-blur-md shadow-md fixed top-0 left-0 right-0 z-50">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#home" class="text-2xl font-bold text-green-600">SOMA-NASI</a>
+                <nav class="hidden md:flex space-x-8">
+                    <a id="home-link" href="#home" class="text-gray-600 hover:text-green-600 transition duration-300">Home</a>
+                    <a id="courses-link" href="#courses-section" class="text-gray-600 hover:text-green-600 transition duration-300">Courses</a>
+                    <a id="snarm-link" href="#snarm" class="text-gray-600 hover:text-green-600 transition duration-300 hidden">SNARM</a>
+                    <a href="#about" class="text-gray-600 hover:text-green-600 transition duration-300">About Us</a>
+                    <a href="#claim" class="text-gray-600 hover:text-green-600 transition duration-300">Claim Certificate</a>
+                    <a id="admin-link" href="#admin-dashboard" class="text-gray-600 hover:text-green-600 transition duration-300 hidden">Admin Dashboard</a>
+                    <a id="instructor-link" href="#instructor-dashboard" class="text-gray-600 hover:text-green-600 transition duration-300 hidden">Instructor Dashboard</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                       <button id="logout-button" class="hidden md:block bg-red-500 text-white font-bold py-2 px-6 rounded-full hover:bg-red-600 transition duration-300">Logout</button>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-gray-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+                <a id="home-link-mobile" href="#home" class="block py-2 text-gray-600 hover:text-green-600">Home</a>
+                <a id="courses-link-mobile" href="#courses-section" class="block py-2 text-gray-600 hover:text-green-600">Courses</a>
+                <a id="snarm-link-mobile" href="#snarm" class="block py-2 text-gray-600 hover:text-green-600 hidden">SNARM</a>
+                <a href="#about" class="block py-2 text-gray-600 hover:text-green-600">About Us</a>
+                <a href="#claim" class="block py-2 text-gray-600 hover:text-green-600">Claim Certificate</a>
+                <a id="admin-link-mobile" href="#admin-dashboard" class="block py-2 text-gray-600 hover:text-green-600 hidden">Admin Dashboard</a>
+                <a id="instructor-link-mobile" href="#instructor-dashboard" class="block py-2 text-gray-600 hover:text-green-600 hidden">Instructor Dashboard</a>
+                <button id="logout-button-mobile" class="block w-full mt-2 text-center bg-red-500 text-white font-bold py-2 px-6 rounded-full hover:bg-red-600 transition duration-300 hidden">Logout</button>
+            </div>
+        </header>
+
+        <main class="min-h-screen pt-16">
+            <section id="home" class="hero-bg pt-32 pb-20">
+                <div class="container mx-auto px-6 text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">Unlock Your Potential with SOMA-NASI</h1>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Join our community of learners and gain the skills you need to succeed in today's competitive world. High-quality courses designed for you.</p>
+                    <div class="text-center mt-8">
+                        <button id="explore-course-btn" class="w-full max-w-lg mx-auto bg-gradient-to-r from-orange-500 to-red-500 hover:from-red-500 hover:to-orange-500 text-white text-lg font-bold px-6 py-4 rounded-xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out">
+                            🚀 Explore Courses
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="courses-section" class="max-w-5xl mx-auto py-20 bg-white hidden">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold">Our Courses</h2>
+                        <p class="text-gray-600 mt-2">All courses are free to enroll. Pay for a certificate upon completion.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="course-list">
+                        </div>
+                </div>
+            </section>
+            
+            <section id="course-details" class="py-20 bg-white hidden">
+                <div class="container mx-auto px-6">
+                    <button id="back-to-courses" class="text-green-600 mb-6 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        Back to Courses
+                    </button>
+                    <div id="course-details-content" class="max-w-4xl mx-auto">
+                        </div>
+                </div>
+            </section>
+
+            <section id="snarm" class="max-w-5xl mx-auto py-20 bg-gray-50 hidden">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold">SNARM</h2>
+                        <p class="text-gray-600 mt-2">SOMA NASI Academic Record Management</p>
+                    </div>
+                    <div id="snarm-content">
+                        </div>
+                </div>
+            </section>
+
+            <section id="about" class="py-20 bg-gray-50">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                           <h2 class="text-3xl md:text-4xl font-bold">Why Choose SOMA-NASI?</h2>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8 text-center">
+                        <div>
+                            <div class="bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl">✓</div>
+                            <h3 class="font-bold text-xl mt-4">Expert Instructors</h3>
+                            <p class="text-gray-600 mt-2">Learn from industry professionals with real-world experience and a passion for teaching.</p>
+                        </div>
+                         <div>
+                            <div class="bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl">✓</div>
+                            <h3 class="font-bold text-xl mt-4">Flexible Learning</h3>
+                            <p class="text-gray-600 mt-2">Access your courses anytime, anywhere. Learn at your own pace to fit your busy schedule.</p>
+                        </div>
+                         <div>
+                            <div class="bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl">✓</div>
+                            <h3 class="font-bold text-xl mt-4">Career Growth</h3>
+                            <p class="text-gray-600 mt-2">Gain valuable, certified skills that are in high demand, and take the next step in your career.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="claim" class="py-20 bg-gray-50">
+                <div class="container mx-auto px-6">
+                    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                        <h2 class="text-3xl font-bold text-center mb-2">Claim Your Certificate</h2>
+                        <p class="text-center text-gray-600 mb-6">Finished your course? Pay the certificate fee to receive your official certificate.</p>
+                        <form id="claim-form">
+                            <div class="mb-4">
+                                <label for="claim-email" class="block text-gray-700 font-semibold mb-2">Your Email Address</label>
+                                <input type="email" id="claim-email" name="claim-email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="claim-name" class="block text-gray-700 font-semibold mb-2">Official Name (for Certificate)</label>
+                                <input type="text" id="claim-name" name="claim-name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="claim-course" class="block text-gray-700 font-semibold mb-2">Course Name</label>
+                                <select id="claim-course" name="claim-course" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                                    <option value="" disabled selected>-- Select a course --</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="w-full bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-yellow-500 transition duration-300 text-lg">Pay & Submit Request</button>
+                                <p class="mt-2 text-sm text-gray-500">Certificate Fee: 150,000 TZS</p>
+                                <p class="mt-2 text-sm text-gray-500">Payment details: AIRTEL MONEY number: 0781117565</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+             <section id="admin-dashboard" class="py-20 bg-white hidden">
+                <div class="container mx-auto px-6">
+                    <div class="max-w-2xl mx-auto bg-gray-50 p-8 rounded-lg shadow-lg">
+                        <h2 class="text-3xl font-bold text-center mb-6">Admin: Dashboard</h2>
+
+                        <div class="flex justify-center space-x-4 mb-8">
+                            <button id="admin-uploads-tab" class="px-6 py-2 rounded-lg font-bold bg-green-600 text-white">Course Uploads</button>
+                            <button id="admin-portfolios-tab" class="px-6 py-2 rounded-lg font-bold text-gray-600 hover:bg-gray-200">Instructor Portfolios</button>
+                        </div>
+                        
+                        <div id="admin-uploads-container">
+                            <h3 class="text-xl font-bold mb-3">Upload Course Materials</h3>
+                            <form id="upload-form">
+                                <div class="mb-4">
+                                    <label for="course-select" class="block text-gray-700 font-semibold mb-2">Select Course</label>
+                                    <select id="course-select" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                                        <option value="" disabled selected>-- Choose a course --</option>
+                                    </select>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="upload-file" class="block text-gray-700 font-semibold mb-2">Upload File (simulated)</label>
+                                    <input type="file" id="upload-file" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-8 rounded-full hover:bg-green-700 transition duration-300 text-lg">Upload Material</button>
+                                </div>
+                            </form>
+                            <div class="mt-8">
+                                <h3 class="text-xl font-bold mb-3">Uploaded Materials History</h3>
+                                <ul id="uploaded-list" class="space-y-2 text-gray-700">
+                                    </ul>
+                            </div>
+                        </div>
+
+                        <div id="admin-portfolios-container" class="hidden">
+                            <h3 class="text-xl font-bold mb-3">Review Instructor Portfolios</h3>
+                            <div id="portfolios-list">
+                                </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="instructor-dashboard" class="py-20 hidden">
+                <div class="container mx-auto px-6">
+                    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                        <h2 class="text-3xl font-bold text-center mb-6">Instructor Dashboard</h2>
+                        <h3 id="instructor-name" class="text-xl font-semibold mb-6 text-center"></h3>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-inner">
+                                <h4 class="text-2xl font-bold mb-4 text-green-700">Course Management</h4>
+                                <ul class="space-y-4" id="instructor-courses">
+                                    </ul class="space-y-4">
+                                <button class="w-full mt-4 bg-gray-700 text-white font-bold py-3 rounded-full hover:bg-gray-800 transition duration-300" onclick="showInstructorMaterialUploadModal()">Upload Course Materials</button>
+                            </div>
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-inner">
+                                <h4 class="text-2xl font-bold mb-4 text-green-700">Learner Assessment</h4>
+                                <div id="assessment-tools">
+                                    <div class="space-y-4">
+                                        <button class="w-full bg-blue-600 text-white font-bold py-3 rounded-full hover:bg-blue-700 transition duration-300" onclick="checkPendingPayments()">Check Pending Payments</button>
+                                        <button class="w-full bg-purple-600 text-white font-bold py-3 rounded-full hover:bg-purple-700 transition duration-300" onclick="showLiveTeachingModal()">Start Live Teaching</button>
+                                        <button class="w-full bg-yellow-400 text-gray-900 font-bold py-3 rounded-full hover:bg-yellow-500 transition duration-300" onclick="checkCertificateClaims()">Check Certificate Claims</button>
+                                        <button class="w-full bg-green-600 text-white font-bold py-3 rounded-full hover:bg-green-700 transition duration-300" onclick="showAssessmentUploadModal()">Upload Learner Assessments</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 bg-gray-100 p-6 rounded-lg shadow-inner">
+                            <h4 class="text-2xl font-bold mb-4 text-green-700">Daily Portfolio</h4>
+                            <form id="portfolio-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700" for="daily-duties">Duties Performed Today</label>
+                                    <textarea id="daily-duties" class="w-full mt-1 border rounded-md p-2" rows="5" placeholder="e.g. Graded 10 assignments for English Course. Conducted a live session on data analysis. Wrote lesson plan for QT Classes." required></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-orange-500 text-white font-bold py-3 rounded-full hover:bg-orange-600">Submit Portfolio</button>
+                            </form>
+                            <div class="mt-8">
+                                <h5 class="text-lg font-bold mb-2">My Recent Submissions</h5>
+                                <div id="instructor-submissions-list">
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-900 text-white">
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold">SOMA-NASI</h3>
+                        <p class="mt-2 text-gray-400">Empowering minds through accessible online education.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Contact & Payments</h3>
+                        <ul class="mt-4 space-y-2 text-gray-300">
+                            <li>Email: <a href="mailto:somanasiedu@gmail.com" class="hover:text-yellow-400">somanasiedu@gmail.com</a></li>
+                            <li>Airtel Money: 0781117565</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Follow Us</h3>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-white">F</a>
+                            <a href="#" class="text-gray-400 hover:text-white">T</a>
+                            <a href="#" class="text-gray-400 hover:text-white">L</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-gray-800 pt-6 text-center text-gray-500">
+                    <p>&copy; 2024 SOMA-NASI E-Learning System. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+            <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+            <p id="modal-message" class="text-gray-600 mb-4"></p>
+
+            <div id="modal-dynamic" class="mb-4"></div>
+
+            <div class="flex justify-center gap-3">
+                <button id="modal-close" class="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-400 transition duration-300">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="enroll-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+            <h3 class="text-2xl font-bold mb-4 text-green-600">Free Enrollment Registration</h3>
+            <p class="text-gray-600 mb-4">Create your account to enroll in the course for free. A certificate can be claimed later.</p>
+            <form id="enroll-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700" for="enroll-name">Full Name</label>
+                    <input type="text" id="enroll-name" class="mt-1 block w-full border rounded-md shadow-sm p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700" for="enroll-email">Email Address</label>
+                    <input type="email" id="enroll-email" class="mt-1 block w-full border rounded-md shadow-sm p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700" for="enroll-password">Choose Password</label>
+                    <input type="password" id="enroll-password" class="mt-1 block w-full border rounded-md shadow-sm p-2" required>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-full hover:bg-green-700">Enroll Now</button>
+            </form>
+            <button id="enroll-modal-close" class="mt-4 bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-400 transition duration-300">Cancel</button>
+        </div>
+    </div>
+
+    <div id="instructor-material-upload-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+            <h3 class="text-2xl font-bold mb-4 text-green-600">Upload Course Material</h3>
+            <form id="instructor-upload-form" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700" for="instructor-upload-course-select">Select Course</label>
+                    <select id="instructor-upload-course-select" class="w-full mt-1 border rounded-md p-2" required>
+                        <option value="" disabled selected>-- Choose a course --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700" for="instructor-upload-file">Upload File (simulated)</label>
+                    <input type="file" id="instructor-upload-file" class="w-full mt-1 border rounded-md p-2" required>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-full hover:bg-green-700">Upload Material</button>
+            </form>
+            <button id="instructor-material-upload-modal-close" class="mt-4 bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-400 transition duration-300">Cancel</button>
+        </div>
+    </div>
+
+
+    <script>
+        // =================================================================================================
+        // --- Simulated Backend and Database (in localStorage) ---
+        // =================================================================================================
+        const STORAGE_KEYS = {
+            SESSION: 'somanasi_session',
+            UPLOADS: 'somanasi_uploads',
+            PAYMENTS: 'somanasi_payments', // Used for certificate payments now
+            CERTIFICATE_CLAIMS: 'somanasi_certificate_claims',
+            PROCESSED_CERTIFICATES: 'somanasi_processed_certificates', // New: Track processed certificates
+            COURSES: 'somanasi_courses',
+            STUDENT_GRADES: 'somanasi_student_grades',
+            ENROLLMENTS: 'somanasi_enrollments',
+            USERS: 'somanasi_users', // Stores all registered student users
+            PORTFOLIOS: 'somanasi_instructor_portfolios' // NEW: Store instructor daily duties
+        };
+
+        const initialCoursesData = {
+            'english': { id: 'english', title: "English Course", instructor: "Dorca Mashauri", short: 'Master the global language of business and communication.', description: "Master the global language of business and communication. Improve your fluency, grammar, and confidence with our comprehensive English course.", materials: ["Module 1: Basic Grammar","Module 2: Conversational English","Module 3: Business English","Module 4: Advanced Writing"], assessment: {"Individual Assignments":10,"Practical Work":10,"Test One":15,"Test Two":15,"Final Examination":50} },
+            'qt': { id: 'qt', title: "QT Classes", instructor: "Bwire Makaro", short:'Quantitative techniques & data analysis.', description: "Dive into quantitative techniques and data analysis...", materials:["Module 1: Introduction to Statistics","Module 2: Probability Theory","Module 3: Regression Analysis","Module 4: Data Visualization"], assessment:{"Individual Assignments":10,"Practical Work":10,"Test One":15,"Test Two":15,"Final Examination":50} },
+            'translation': { id:'translation', title: "Translation and Interpretation", instructor: "Dorca Mashauri", short:'Become a professional translator or interpreter.', description: "Bridge language barriers...", materials:["Module 1: Fundamentals of Translation","Module 2: Professional Ethics","Module 3: Simultaneous Interpretation","Module 4: Technical Translation"], assessment:{"Individual Assignments":10,"Practical Work":10,"Test One":15,"Test Two":15,"Final Examination":50} },
+            'creative': { id:'creative', title: "Creative Writing", instructor: "Nelson Elia", short:'Learn the art of storytelling.', description: "Unleash your imagination and learn the art of storytelling.", materials:["Module 1: Plot and Character Development","Module 2: Dialogue and Narration","Module 3: Genre Writing (Fiction)","Module 4: Publishing Your Work"], assessment:{"Individual Assignments":10,"Practical Work":10,"Test One":15,"Test Two":15,"Final Examination":50} },
+            'freelancing': { id:'freelancing', title: "Freelancing", instructor: "Bwire Makaro", short:'Start your freelance business.', description: "Become your own boss. Learn how to find clients...", materials:["Module 1: Setting up Your Business","Module 2: Finding Clients","Module 3: Pricing and Contracts","Module 4: Marketing and Branding"], assessment:{"Individual Assignments":10,"Practical Work":10,"Test One":15,"Test Two":15,"Final Examination":50} }
+        };
+
+        const adminAccount = { email: "admin@somanasi.com", password: "somanasiadmin", role: "admin", name: "Admin" };
+        const instructorAccounts = {
+            "bwire makaro": { email: "bwire.makaro@somanasi.com", name: "Bwire Makaro", password: "Somanasi1234", role: "instructor" },
+            "dorca mashauri": { email: "dorca.mashauri@somanasi.com", name: "Dorca Mashauri", password: "Somanasi1234", role: "instructor" },
+            "nelson elia": { email: "nelson.elia@somanasi.com", name: "Nelson Elia", password: "Somanasi1234", role: "instructor" },
+        };
+        
+        // A simple "database" simulation using localStorage
+        function loadDB(key, initialData) {
+            if (!localStorage.getItem(key)) {
+                localStorage.setItem(key, JSON.stringify(initialData));
+            }
+            return JSON.parse(localStorage.getItem(key));
+        }
+
+        // Initialize users and courses if not already present in localStorage
+        loadDB(STORAGE_KEYS.COURSES, initialCoursesData);
+        loadDB(STORAGE_KEYS.USERS, {}); // Start with no registered students
+        loadDB(STORAGE_KEYS.ENROLLMENTS, {});
+        loadDB(STORAGE_KEYS.STUDENT_GRADES, {});
+        loadDB(STORAGE_KEYS.CERTIFICATE_CLAIMS, []);
+        loadDB(STORAGE_KEYS.UPLOADS, []);
+        loadDB(STORAGE_KEYS.PAYMENTS, []);
+        loadDB(STORAGE_KEYS.PROCESSED_CERTIFICATES, []); // Initialize new storage for processed certificates
+        loadDB(STORAGE_KEYS.PORTFOLIOS, []); // NEW: Initialize instructor portfolios
+
+        // --- Logo as Base64 for embedding in PDF ---
+        // I have pre-converted your SOMA NASI.jpeg into a Base64 string.
+        const logoBase64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYEBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCABQAFADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1FVVldYWVpkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6VooorlOwKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z";
+
+
+        // --- Helper function to convert percentage to GPA (4.0 scale) ---
+        function convertPercentageToGPA(percentage) {
+            if (percentage >= 90) return 4.0;
+            if (percentage >= 80) return parseFloat((3.0 + (percentage - 80) / 10).toFixed(1));
+            if (percentage >= 70) return parseFloat((2.0 + (percentage - 70) / 10).toFixed(1));
+            if (percentage >= 60) return parseFloat((1.0 + (percentage - 60) / 10).toFixed(1));
+            return 0.0;
+        }
+
+        // --- Helper function to get grade comment ---
+        function getGradeComment(percentage) {
+            if (percentage >= 80) return { grade: 'A', comment: 'Excellent performance! You have a deep understanding of the course material.' };
+            if (percentage >= 70) return { grade: 'B', comment: 'Very good. You demonstrated a strong grasp of the concepts.' };
+            if (percentage >= 60) return { grade: 'C', comment: 'Good. You met the course requirements, but there is room for improvement.' };
+            if (percentage >= 50) return { grade: 'D', comment: 'Satisfactory. Your performance is sufficient to pass, but a review of key topics is recommended.' };
+            if (percentage >= 40) return { grade: 'E', comment: 'Weak pass. You marginally met the requirements, but more effort is needed.' };
+            return { grade: 'F', comment: 'Fail. The course requirements were not met.' };
+        }
+
+
+        // --- Simulated API Endpoints ---
+        const api = {
+            loginUser: (identifier, password) => new Promise(resolve => {
+                setTimeout(() => {
+                    // Check admin
+                    if (identifier === adminAccount.email && password === adminAccount.password) {
+                        return resolve({ success: true, user: adminAccount });
+                    }
+                    // Check instructor
+                    const instructor = Object.values(instructorAccounts).find(acc => acc.email.toLowerCase() === identifier.toLowerCase() || acc.name.toLowerCase() === identifier.toLowerCase());
+                    if (instructor && instructor.password === password) {
+                        return resolve({ success: true, user: instructor });
+                    }
+                    // Check registered student
+                    const users = loadDB(STORAGE_KEYS.USERS);
+                    const student = users[identifier.toLowerCase()]; // Use lowercased email as key
+                    if (student && student.password === password) {
+                        return resolve({ success: true, user: student });
+                    }
+                    
+                    resolve({ success: false, message: "Invalid email/username or password." });
+                }, 500); // Simulate network latency
+            }),
+
+            registerStudent: (name, email, password) => new Promise(resolve => {
+                setTimeout(() => {
+                    const users = loadDB(STORAGE_KEYS.USERS);
+                    const lowerCaseEmail = email.toLowerCase();
+                    if(users[lowerCaseEmail]){
+                        return resolve({ success: false, message: "Email already registered. Please login." });
+                    }
+                    users[lowerCaseEmail] = { name, email: lowerCaseEmail, role: "student", password };
+                    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+                    resolve({ success: true, user: users[lowerCaseEmail] });
+                }, 300);
+            }),
+
+            fetchCourses: () => new Promise(resolve => {
+                setTimeout(() => resolve(Object.values(loadDB(STORAGE_KEYS.COURSES))), 300);
+            }),
+
+            enrollStudent: (courseId, student) => new Promise(resolve => {
+                setTimeout(() => {
+                    const enrollments = loadDB(STORAGE_KEYS.ENROLLMENTS);
+                    if(!enrollments[courseId]){
+                        enrollments[courseId] = [];
+                    }
+                    const isEnrolled = enrollments[courseId].some(e => e.email === student.email);
+                    if(!isEnrolled){
+                        enrollments[courseId].push({ name: student.name, email: student.email, date: new Date().toLocaleString() });
+                        localStorage.setItem(STORAGE_KEYS.ENROLLMENTS, JSON.stringify(enrollments));
+                    }
+                    resolve({ success: true, message: "Enrollment successful." });
+                }, 300);
+            }),
+            
+            getEnrolledStudents: (courseId) => new Promise(resolve => {
+                setTimeout(() => {
+                    const enrollments = loadDB(STORAGE_KEYS.ENROLLMENTS);
+                    resolve(enrollments[courseId] || []);
+                }, 300);
+            }),
+
+            submitCertificateClaim: (claim) => new Promise(resolve => {
+                setTimeout(() => {
+                    const claims = loadDB(STORAGE_KEYS.CERTIFICATE_CLAIMS);
+                    claims.push(claim);
+                    localStorage.setItem(STORAGE_KEYS.CERTIFICATE_CLAIMS, JSON.stringify(claims));
+                    resolve({ success: true, message: "Certificate claim submitted." });
+                }, 500);
+            }),
+
+            getCertificateClaims: (instructorName) => new Promise(resolve => {
+                setTimeout(() => {
+                    const claims = loadDB(STORAGE_KEYS.CERTIFICATE_CLAIMS);
+                    const instructorCourses = Object.values(initialCoursesData).filter(c => c.instructor.toLowerCase() === instructorName.toLowerCase()).map(c => c.title);
+                    const claimsForInstructor = claims.filter(c => instructorCourses.includes(c.courseName));
+                    resolve(claimsForInstructor);
+                }, 500);
+            }),
+
+            processCertificate: (studentEmail, courseId) => new Promise(resolve => {
+                setTimeout(() => {
+                    const processedCerts = loadDB(STORAGE_KEYS.PROCESSED_CERTIFICATES);
+                    const existing = processedCerts.find(c => c.studentEmail === studentEmail && c.courseId === courseId);
+                    if (!existing) {
+                        processedCerts.push({ studentEmail, courseId, date: new Date().toLocaleDateString() });
+                        localStorage.setItem(STORAGE_KEYS.PROCESSED_CERTIFICATES, JSON.stringify(processedCerts));
+                    }
+                    resolve({ success: true, message: "Certificate marked as processed." });
+                }, 500);
+            }),
+
+            hasProcessedCertificate: (studentEmail, courseId) => new Promise(resolve => {
+                setTimeout(() => {
+                    const processedCerts = loadDB(STORAGE_KEYS.PROCESSED_CERTIFICATES);
+                    const found = processedCerts.some(c => c.studentEmail === studentEmail && c.courseId === courseId);
+                    resolve(found);
+                }, 100);
+            }),
+            
+            uploadMaterial: (fileDetails) => new Promise(resolve => {
+                setTimeout(() => {
+                    const uploads = loadDB(STORAGE_KEYS.UPLOADS);
+                    uploads.unshift(fileDetails);
+                    localStorage.setItem(STORAGE_KEYS.UPLOADS, JSON.stringify(uploads));
+                    resolve({ success: true, message: "File uploaded successfully." });
+                }, 500);
+            }),
+            
+            getUploadedMaterials: () => new Promise(resolve => {
+                setTimeout(() => resolve(loadDB(STORAGE_KEYS.UPLOADS)), 300);
+            }),
+            
+            uploadGrades: (grades) => new Promise(resolve => {
+                setTimeout(() => {
+                    const studentGrades = loadDB(STORAGE_KEYS.STUDENT_GRADES);
+                    const existingGradesForStudent = studentGrades[grades.studentEmail] || [];
+                    const existingCourseIndex = existingGradesForStudent.findIndex(rec => rec.courseId === grades.courseId);
+                    
+                    if (existingCourseIndex > -1) {
+                        const existingAssessmentIndex = existingGradesForStudent[existingCourseIndex].grades.findIndex(g => g.type === grades.grades[0].type);
+                        if (existingAssessmentIndex > -1) {
+                             existingGradesForStudent[existingCourseIndex].grades[existingAssessmentIndex] = grades.grades[0];
+                        } else {
+                            existingGradesForStudent[existingCourseIndex].grades.push(grades.grades[0]);
+                        }
+                    } else {
+                        existingGradesForStudent.push(grades);
+                    }
+                    studentGrades[grades.studentEmail] = existingGradesForStudent;
+                    localStorage.setItem(STORAGE_KEYS.STUDENT_GRADES, JSON.stringify(studentGrades));
+                    resolve({ success: true, message: "Grades uploaded successfully." });
+                }, 500);
+            }),
+            
+            getStudentGrades: (studentEmail) => new Promise(resolve => {
+                setTimeout(() => {
+                    const studentGrades = loadDB(STORAGE_KEYS.STUDENT_GRADES);
+                    resolve(studentGrades[studentEmail] || []);
+                }, 300);
+            }),
+
+            submitPortfolio: (portfolio) => new Promise(resolve => {
+                setTimeout(() => {
+                    const portfolios = loadDB(STORAGE_KEYS.PORTFOLIOS);
+                    // Add a unique ID and initial status
+                    const newPortfolio = { ...portfolio, id: Date.now(), status: 'Pending', feedback: null };
+                    portfolios.push(newPortfolio);
+                    localStorage.setItem(STORAGE_KEYS.PORTFOLIOS, JSON.stringify(portfolios));
+                    resolve({ success: true, message: "Daily duties submitted for review." });
+                }, 500);
+            }),
+
+            getInstructorPortfolios: (instructorEmail) => new Promise(resolve => {
+                setTimeout(() => {
+                    const portfolios = loadDB(STORAGE_KEYS.PORTFOLIOS);
+                    resolve(portfolios.filter(p => p.instructorEmail === instructorEmail).sort((a, b) => b.timestamp - a.timestamp));
+                }, 300);
+            }),
+
+            getAllPortfolios: () => new Promise(resolve => {
+                setTimeout(() => {
+                    const portfolios = loadDB(STORAGE_KEYS.PORTFOLIOS);
+                    resolve(portfolios.sort((a, b) => b.timestamp - a.timestamp));
+                }, 300);
+            }),
+
+            updatePortfolioStatus: (portfolioId, status, feedback) => new Promise(resolve => {
+                setTimeout(() => {
+                    const portfolios = loadDB(STORAGE_KEYS.PORTFOLIOS);
+                    const portfolio = portfolios.find(p => p.id === portfolioId);
+                    if (portfolio) {
+                        portfolio.status = status;
+                        portfolio.feedback = feedback;
+                        localStorage.setItem(STORAGE_KEYS.PORTFOLIOS, JSON.stringify(portfolios));
+                        resolve({ success: true, message: `Portfolio ${status.toLowerCase()}.` });
+                    } else {
+                        resolve({ success: false, message: "Portfolio not found." });
+                    }
+                }, 500);
+            })
+
+        };
+
+        // =================================================================================================
+        // --- Main Front-end Application Logic ---
+        // =================================================================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginScreen = document.getElementById('login-screen');
+            const mainAppContent = document.getElementById('main-app-content');
+            const loginTab = document.getElementById('login-tab');
+            const signupTab = document.getElementById('signup-tab');
+            const loginFormContainer = document.getElementById('login-form-container');
+            const signupFormContainer = document.getElementById('signup-form-container');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const logoutButton = document.getElementById('logout-button');
+            const logoutButtonMobile = document.getElementById('logout-button-mobile');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const claimForm = document.getElementById('claim-form');
+            const uploadForm = document.getElementById('upload-form'); // Admin upload form
+            const adminLink = document.getElementById('admin-link');
+            const adminLinkMobile = document.getElementById('admin-link-mobile');
+            const instructorLink = document.getElementById('instructor-link');
+            const instructorLinkMobile = document.getElementById('instructor-link-mobile');
+            const snarmLink = document.getElementById('snarm-link');
+            const snarmLinkMobile = document.getElementById('snarm-link-mobile');
+            const homeLink = document.getElementById('home-link');
+            const coursesLink = document.getElementById('courses-link');
+            const homeLinkMobile = document.getElementById('home-link-mobile');
+            const coursesLinkMobile = document.getElementById('courses-link-mobile');
+            const messageModal = document.getElementById('message-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const modalClose = document.getElementById('modal-close');
+            const modalDynamic = document.getElementById('modal-dynamic');
+            const courseListSection = document.getElementById('courses-section');
+            const courseDetailsSection = document.getElementById('course-details');
+            const courseDetailsContent = document.getElementById('course-details-content');
+            const backToCoursesButton = document.getElementById('back-to-courses');
+            const adminDashboardSection = document.getElementById('admin-dashboard');
+            const instructorDashboardSection = document.getElementById('instructor-dashboard');
+            const instructorNameDisplay = document.getElementById('instructor-name');
+            const instructorCoursesList = document.getElementById('instructor-courses');
+            const uploadedList = document.getElementById('uploaded-list');
+            const enrollModal = document.getElementById('enroll-modal');
+            const enrollForm = document.getElementById('enroll-form');
+            const enrollModalClose = document.getElementById('enroll-modal-close');
+            const instructorMaterialUploadModal = document.getElementById('instructor-material-upload-modal');
+            const instructorMaterialUploadModalClose = document.getElementById('instructor-material-upload-modal-close');
+            const instructorUploadForm = document.getElementById('instructor-upload-form');
+            const portfolioForm = document.getElementById('portfolio-form');
+            const instructorSubmissionsList = document.getElementById('instructor-submissions-list');
+            const adminUploadsTab = document.getElementById('admin-uploads-tab');
+            const adminPortfoliosTab = document.getElementById('admin-portfolios-tab');
+            const adminUploadsContainer = document.getElementById('admin-uploads-container');
+            const adminPortfoliosContainer = document.getElementById('admin-portfolios-container');
+            const portfoliosList = document.getElementById('portfolios-list');
+            
+            let coursesData = {}; // Now populated from the simulated backend
+
+            function saveSession(session) { localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(session)); }
+            function loadSession() { try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.SESSION)); } catch(e){return null;} }
+            function clearSession() { localStorage.removeItem(STORAGE_KEYS.SESSION); }
+
+            function hideAllSections() { ['home','courses-section','course-details','snarm','about','claim','admin-dashboard','instructor-dashboard'].forEach(id=>document.getElementById(id).classList.add('hidden')); }
+            function showSection(id){ hideAllSections(); document.getElementById(id).classList.remove('hidden'); }
+
+            async function renderCourses() {
+                const courses = await api.fetchCourses();
+                coursesData = Object.fromEntries(courses.map(course => [course.title, course]));
+                const courseListHtml = courses.map(course => `
+                    <div class="bg-white p-6 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
+                        <h2 class="text-xl font-bold mb-2">${course.title}</h2>
+                        <p class="text-gray-700 mb-2">Instructor: ${course.instructor}</p>
+                        <p class="text-gray-600 mb-4">${course.short}</p>
+                        <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full" data-course-id="${course.id}" onclick="handleEnrollClick('${course.id}')">Enroll for Free</button>
+                    </div>
+                `).join('');
+                document.getElementById('course-list').innerHTML = courseListHtml;
+
+                // Populate course dropdowns for certificate claim and admin upload
+                const courseOptionsForSelects = courses.map(course => `<option value="${course.title}">${course.title}</option>`).join('');
+                document.getElementById('claim-course').innerHTML = `<option value="" disabled selected>-- Select a course --</option>` + courseOptionsForSelects;
+                
+                const courseOptionsForAdminUpload = courses.map(course => `<option value="${course.id}">${course.title}</option>`).join('');
+                document.getElementById('course-select').innerHTML = `<option value="" disabled selected>-- Choose a course --</option>` + courseOptionsForAdminUpload;
+            }
+
+            let enrollingCourseId = null; // Store the course ID when enrollment modal is triggered
+
+            // New handler for enroll button click to manage login/registration flow
+            window.handleEnrollClick = async function(courseId) {
+                const session = loadSession();
+                if (session && session.role === 'student') {
+                    // If already a student, just enroll
+                    showModal('Enrolling...', `Enrolling you in ${coursesData[Object.keys(coursesData).find(key => coursesData[key].id === courseId)].title}...`);
+                    const response = await api.enrollStudent(courseId, session);
+                    if(response.success){
+                        showModal('Enrollment Successful!', `You are now enrolled in ${coursesData[Object.keys(coursesData).find(key => coursesData[key].id === courseId)].title} for free!`);
+                    } else {
+                        showModal('Enrollment Failed', response.message);
+                    }
+                } else {
+                    // Not logged in or not a student, open registration/enrollment modal
+                    enrollingCourseId = courseId;
+                    enrollModal.classList.remove('hidden');
+                    enrollModal.classList.add('flex');
+                }
+            };
+            
+            enrollForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const name = document.getElementById('enroll-name').value;
+                const email = document.getElementById('enroll-email').value;
+                const password = document.getElementById('enroll-password').value;
+
+                showModal('Registering...', 'Creating your account and enrolling you in the course.');
+                const registerResponse = await api.registerStudent(name, email, password);
+
+                if (registerResponse.success) {
+                    const enrollResponse = await api.enrollStudent(enrollingCourseId, registerResponse.user);
+                    if (enrollResponse.success) {
+                        showMainContent(registerResponse.user); // Log in the new user
+                        enrollModal.classList.add('hidden'); // Close registration modal
+                        showModal('Enrollment & Registration Successful!', `Welcome to SOMA-NASI, ${registerResponse.user.name}! You are now enrolled in your chosen course for free.`);
+                    } else {
+                        showModal('Enrollment Failed', 'Account created, but enrollment failed. Please try again.');
+                    }
+                } else {
+                    showModal('Registration Failed', registerResponse.message);
+                }
+            });
+
+            enrollModalClose.addEventListener('click', () => {
+                enrollModal.classList.add('hidden');
+            });
+            
+            async function showMainContent(user) {
+                loginScreen.classList.add('hidden');
+                mainAppContent.classList.remove('hidden');
+                
+                // Hide all role-specific links first
+                adminLink.classList.add('hidden'); adminLinkMobile.classList.add('hidden');
+                instructorLink.classList.add('hidden'); instructorLinkMobile.classList.add('hidden');
+                snarmLink.classList.add('hidden'); snarmLinkMobile.classList.add('hidden');
+                
+                // Ensure common links are visible
+                homeLink.classList.remove('hidden'); coursesLink.classList.remove('hidden');
+                homeLinkMobile.classList.remove('hidden'); coursesLinkMobile.classList.remove('hidden');
+                logoutButton.classList.remove('hidden'); document.getElementById('logout-button-mobile').classList.remove('hidden');
+
+                saveSession(user);
+
+                if (user.role === 'admin') {
+                    showSection('admin-dashboard'); adminLink.classList.remove('hidden'); adminLinkMobile.classList.remove('hidden');
+                    // Hide other common links for admin
+                    homeLink.classList.add('hidden'); coursesLink.classList.add('hidden'); homeLinkMobile.classList.add('hidden'); coursesLinkMobile.classList.add('hidden');
+                    renderUploads(); // Render admin specific uploads
+                    renderPortfolios(); // NEW: Render portfolios for admin
+                    showModal('Login Successful!', 'Welcome back, Admin!');
+                } else if (user.role === 'instructor') {
+                    showSection('instructor-dashboard'); instructorLink.classList.remove('hidden'); instructorLinkMobile.classList.remove('hidden');
+                    // Hide other common links for instructor
+                    homeLink.classList.add('hidden'); coursesLink.classList.add('hidden'); homeLinkMobile.classList.add('hidden'); coursesLinkMobile.classList.add('hidden');
+                    instructorNameDisplay.textContent = `Welcome, ${user.name}`;
+                    const courses = await api.fetchCourses();
+                    const instructorCourses = courses.filter(course => course.instructor.toLowerCase() === user.name.toLowerCase());
+                    instructorCoursesList.innerHTML = instructorCourses.map(c => `<li><a href="#" class="block bg-gray-200 hover:bg-gray-300 rounded-lg p-4 font-semibold">${c.title}</a></li>`).join('');
+                    renderInstructorSubmissions(user.email); // NEW: Render instructor's past submissions
+                    showModal('Login Successful!', 'Welcome back, Instructor!');
+                } else { // Student role
+                    snarmLink.classList.remove('hidden'); snarmLinkMobile.classList.remove('hidden');
+                    showSection('home');
+                    showModal('Login Successful!', `Welcome, ${user.name}!`);
+                }
+            }
+
+            // --- Event Listeners for Forms and Buttons ---
+            loginTab.addEventListener('click', () => {
+                loginTab.classList.add('bg-green-600', 'text-white');
+                signupTab.classList.remove('bg-green-600', 'text-white');
+                signupTab.classList.add('text-gray-600');
+                loginFormContainer.classList.remove('hidden');
+                signupFormContainer.classList.add('hidden');
+            });
+            signupTab.addEventListener('click', () => {
+                signupTab.classList.add('bg-green-600', 'text-white');
+                loginTab.classList.remove('bg-green-600', 'text-white');
+                loginTab.classList.add('text-gray-600');
+                signupFormContainer.classList.remove('hidden');
+                loginFormContainer.classList.add('hidden');
+            });
+
+            // Login Form Submission
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const identifier = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                showModal('Logging In...', 'Please wait while we authenticate your credentials.');
+                const response = await api.loginUser(identifier, password);
+                
+                if (response.success) {
+                    showMainContent(response.user);
+                } else {
+                    showModal('Login Failed', response.message);
+                }
+            });
+
+            signupForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value; // Get chosen password
+                
+                showModal('Signing Up...', 'Creating your new account.');
+                const response = await api.registerStudent(name, email, password); // Pass password
+
+                if (response.success) {
+                    showModal('Signup Successful!','Your account has been created. You can now log in using your email and chosen password.');
+                    loginTab.click(); // Switch to login tab
+                    signupForm.reset(); // Clear signup form
+                } else {
+                    showModal('Signup Failed', response.message);
+                }
+            });
+
+            function logout(){ clearSession(); location.reload(); }
+            logoutButton.addEventListener('click', logout);
+            logoutButtonMobile.addEventListener('click', logout);
+            mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+
+            // "Explore Courses" button on Home page
+            document.getElementById('explore-course-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('courses-section').scrollIntoView({ behavior: 'smooth' });
+            });
+
+
+            claimForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                const name = document.getElementById('claim-name').value;
+                const email = document.getElementById('claim-email').value;
+                const courseName = document.getElementById('claim-course').value;
+                
+                showModal('Submitting...', 'Sending your certificate request...');
+                const response = await api.submitCertificateClaim({ name, email, courseName, date: new Date().toLocaleString() });
+
+                if (response.success) {
+                    showModal('Claim Request Submitted', response.message + '. Please confirm payment (150,000 TZS to 0781117565 AIRTEL MONEY) with the administration.');
+                    claimForm.reset();
+                } else {
+                    showModal('Claim Request Failed', 'There was an error submitting your request. Please try again.');
+                }
+            });
+
+            // Admin Upload Form
+            uploadForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                const courseId = document.getElementById('course-select').value;
+                const fileInput = document.getElementById('upload-file');
+                if(!fileInput.files[0]){ showModal('Upload Failed','Please select a file to upload.'); return; }
+
+                const fileDetails = {
+                    uploadedBy: loadSession().name, // Admin's name
+                    courseId: courseId,
+                    fileName: fileInput.files[0].name,
+                    timestamp: new Date().toISOString()
+                };
+                
+                showModal('Uploading...', 'Please wait while the file is uploaded.');
+                const response = await api.uploadMaterial(fileDetails);
+                
+                if (response.success) {
+                    showModal('Upload Successful!', response.message);
+                    renderUploads();
+                    uploadForm.reset();
+                } else {
+                    showModal('Upload Failed', 'There was an error uploading your file. Please try again.');
+                }
+            });
+
+            async function renderUploads(){
+                const uploads = await api.getUploadedMaterials();
+                uploadedList.innerHTML = '';
+                const courses = await api.fetchCourses();
+                const courseIdMap = Object.fromEntries(courses.map(c => [c.id, c.title]));
+
+                uploads.forEach(upload => {
+                    const li = document.createElement('li');
+                    li.textContent = `${new Date(upload.timestamp).toLocaleString()}: ${upload.fileName} (${courseIdMap[upload.courseId] || 'Unknown Course'}) uploaded by ${upload.uploadedBy}`;
+                    uploadedList.appendChild(li);
+                });
+            }
+
+            // --- NEW: Admin Portfolio Review Functions ---
+            adminUploadsTab.addEventListener('click', () => {
+                adminUploadsTab.classList.add('bg-green-600', 'text-white');
+                adminPortfoliosTab.classList.remove('bg-green-600', 'text-white');
+                adminUploadsContainer.classList.remove('hidden');
+                adminPortfoliosContainer.classList.add('hidden');
+            });
+
+            adminPortfoliosTab.addEventListener('click', () => {
+                adminPortfoliosTab.classList.add('bg-green-600', 'text-white');
+                adminUploadsTab.classList.remove('bg-green-600', 'text-white');
+                adminPortfoliosContainer.classList.remove('hidden');
+                adminUploadsContainer.classList.add('hidden');
+                renderPortfolios(); // Load portfolios when tab is clicked
+            });
+
+            async function renderPortfolios() {
+                const portfolios = await api.getAllPortfolios();
+                portfoliosList.innerHTML = '';
+
+                if (portfolios.length === 0) {
+                    portfoliosList.innerHTML = `<p class="text-center text-gray-500 mt-4">No instructor portfolios to review.</p>`;
+                    return;
+                }
+
+                portfolios.forEach(p => {
+                    const statusColor = p.status === 'Approved' ? 'bg-green-200 text-green-800' : p.status === 'Rejected' ? 'bg-red-200 text-red-800' : 'bg-yellow-200 text-yellow-800';
+                    const feedbackHtml = p.feedback ? `<p class="mt-2 text-sm text-gray-700 font-semibold">Admin Feedback: <span class="font-normal">${p.feedback}</span></p>` : '';
+                    
+                    const actionButtons = p.status === 'Pending' ? `
+                        <div class="mt-4 flex gap-2">
+                            <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition" onclick="updatePortfolioStatus(${p.id}, 'Approved', null)">Approve</button>
+                            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" onclick="showRejectModal(${p.id})">Reject</button>
+                        </div>
+                    ` : '';
+
+                    portfoliosList.innerHTML += `
+                        <div class="bg-white p-6 rounded-lg shadow-md mb-4 border-l-4 border-gray-400">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-xl font-bold">${p.instructorName}</h4>
+                                    <p class="text-gray-600 text-sm mb-2">Submitted on: ${new Date(p.timestamp).toLocaleString()}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm font-semibold ${statusColor}">${p.status}</span>
+                            </div>
+                            <p class="whitespace-pre-wrap mt-2 p-3 bg-gray-50 rounded-md border text-gray-800">${p.duties}</p>
+                            ${feedbackHtml}
+                            ${actionButtons}
+                        </div>
+                    `;
+                });
+            }
+            
+            window.showRejectModal = function(portfolioId) {
+                const dynamicHtml = `
+                    <textarea id="reject-feedback" class="w-full mt-1 border rounded-md p-2" rows="3" placeholder="Provide feedback for rejection..." required></textarea>
+                    <button class="mt-4 w-full bg-red-500 text-white font-bold py-2 rounded-full" onclick="updatePortfolioStatus(${portfolioId}, 'Rejected', document.getElementById('reject-feedback').value)">Submit Rejection</button>
+                `;
+                showModal('Reject Portfolio', 'Please provide feedback for why this portfolio is being rejected.', dynamicHtml);
+            };
+
+            window.updatePortfolioStatus = async function(portfolioId, status, feedback) {
+                showModal('Updating Status...', 'Please wait...');
+                const response = await api.updatePortfolioStatus(portfolioId, status, feedback);
+                if (response.success) {
+                    showModal('Success', response.message);
+                    renderPortfolios(); // Refresh the list
+                } else {
+                    showModal('Error', response.message);
+                }
+            };
+            // --- END NEW: Admin Portfolio Review Functions ---
+
+
+            // --- Instructor Dashboard Functions ---
+            // NEW: Handle portfolio form submission
+            portfolioForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const session = loadSession();
+                const duties = document.getElementById('daily-duties').value;
+                const submission = {
+                    instructorName: session.name,
+                    instructorEmail: session.email,
+                    duties,
+                    timestamp: Date.now()
+                };
+
+                showModal('Submitting...', 'Sending your daily duties for admin approval.');
+                const response = await api.submitPortfolio(submission);
+                
+                if (response.success) {
+                    showModal('Success!', response.message);
+                    portfolioForm.reset();
+                    renderInstructorSubmissions(session.email); // Refresh the list
+                } else {
+                    showModal('Error', 'Submission failed. Please try again.');
+                }
+            });
+
+            // NEW: Render instructor's past submissions
+            async function renderInstructorSubmissions(instructorEmail) {
+                const submissions = await api.getInstructorPortfolios(instructorEmail);
+                instructorSubmissionsList.innerHTML = '';
+                if (submissions.length === 0) {
+                    instructorSubmissionsList.innerHTML = `<p class="text-center text-gray-500 mt-4">No submissions yet.</p>`;
+                    return;
+                }
+                submissions.forEach(s => {
+                    const statusColor = s.status === 'Approved' ? 'bg-green-200 text-green-800' : s.status === 'Rejected' ? 'bg-red-200 text-red-800' : 'bg-yellow-200 text-yellow-800';
+                    const feedbackHtml = s.feedback ? `<p class="mt-2 text-sm text-gray-700 font-semibold">Admin Feedback: <span class="font-normal">${s.feedback}</span></p>` : '';
+                    instructorSubmissionsList.innerHTML += `
+                        <div class="bg-white p-4 rounded-lg shadow-sm mb-2 border-l-4 border-gray-400">
+                            <div class="flex justify-between items-start">
+                                <p class="text-gray-600 text-sm mb-1">Submitted on: ${new Date(s.timestamp).toLocaleString()}</p>
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">${s.status}</span>
+                            </div>
+                            <p class="whitespace-pre-wrap text-gray-800">${s.duties}</p>
+                            ${feedbackHtml}
+                        </div>
+                    `;
+                });
+            }
+
+            window.checkPendingPayments = async function() {
+                const session = loadSession();
+                if (!session || session.role !== 'instructor') return;
+                
+                showModal('Loading...', 'Fetching pending certificate payments...');
+                // This is a dummy for now as the actual payment logic is external
+                const payments = [{ name: "Student A", email: "studentA@example.com", course: "English Course", amount: "150,000 TZS", date: new Date().toLocaleDateString() }];
+                
+                let content = ``;
+                if (payments.length === 0) {
+                    content = `<p class="text-gray-500">No pending payment requests found.</p>`;
+                } else {
+                    content = `<div class="space-y-4 text-left">
+                        <p class="font-bold mb-2">Simulated Payments (Manual Confirmation Required):</p>
+                        ${payments.map(p => `<div class="bg-gray-200 p-4 rounded-md">
+                            <p class="font-semibold">Learner: ${p.name} (${p.email})</p>
+                            <p>Course: ${p.course}</p>
+                            <p>Amount: ${p.amount}</p>
+                            <p class="text-sm text-gray-500">Date: ${p.date}</p>
+                            <button class="mt-2 bg-green-500 text-white px-3 py-1 rounded" onclick="showModal('Payment Confirmed', 'Payment for ${p.name} for ${p.course} confirmed.')">Confirm Payment</button>
+                        </div>`).join('')}
+                    </div>`;
+                }
+                showModal('Pending Certificate Payments', `Review and confirm payments from learners for certificates.`, content);
+            };
+
+            window.checkCertificateClaims = async function() {
+                const session = loadSession();
+                if (!session || session.role !== 'instructor') return;
+                
+                showModal('Loading...', 'Fetching certificate claims...');
+                const claims = await api.getCertificateClaims(session.name);
+                
+                let content = ``;
+                if (claims.length === 0) {
+                    content = `<p class="text-gray-500">No certificate claim requests found for your courses.</p>`;
+                } else {
+                    content = `<div class="space-y-4 text-left">
+                        ${claims.map(c => `<div class="bg-gray-200 p-4 rounded-md">
+                            <p class="font-semibold">Learner: ${c.name} (${c.email})</p>
+                            <p>Course: ${c.courseName}</p>
+                            <p class="text-sm text-gray-500">${c.date}</p>
+                            <button class="mt-2 bg-green-500 text-white px-3 py-1 rounded" onclick="processCertificateForLearner('${c.email}', '${coursesData[c.courseName].id}', '${c.name}', '${c.courseName}')">Process Certificate</button>
+                        </div>`).join('')}
+                    </div>`;
+                }
+                showModal('Certificate Claims', `Review certificate requests from learners.`, content);
+            };
+
+            window.processCertificateForLearner = async function(studentEmail, courseId, studentName, courseName) {
+                showModal('Processing Certificate...', `Marking certificate for ${studentName} (${courseName}) as processed.`);
+                const response = await api.processCertificate(studentEmail, courseId);
+                if (response.success) {
+                    showModal('Certificate Processed', `Certificate for ${studentName} for ${courseName} has been processed.`);
+                    // Optionally refresh the claims list
+                    checkCertificateClaims();
+                } else {
+                    showModal('Processing Failed', 'Could not process certificate. Please try again.');
+                }
+            };
+
+
+            window.showLiveTeachingModal = async function() {
+                const session = loadSession();
+                const allCourses = await api.fetchCourses();
+                const instructorCourses = allCourses.filter(course => course.instructor.toLowerCase() === session.name.toLowerCase());
+                const courseOptions = instructorCourses.map(course => `<option value="${course.id}">${course.title}</option>`).join('');
+
+                const dynamicHtml = `
+                    <div class="text-left">
+                        <label for="live-course-select" class="block text-gray-700 font-semibold mb-2">Select a course to start live session:</label>
+                        <select id="live-course-select" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                            ${courseOptions}
+                        </select>
+                    </div>
+                    <button class="mt-4 w-full bg-green-600 text-white font-bold py-2 rounded-full hover:bg-green-700 transition duration-300" onclick="startLiveSession()">Start Session</button>
+                `;
+                showModal('Live Teaching Session', 'Choose a course to start a live session for your students.', dynamicHtml);
+            };
+
+            window.startLiveSession = async function() {
+                const courseId = document.getElementById('live-course-select').value;
+                const allCourses = await api.fetchCourses();
+                const course = allCourses.find(c => c.id === courseId);
+                showModal('Live Session Started!', `You have started a live teaching session for ${course.title}. Learners will be notified.`);
+            };
+
+            window.showAssessmentUploadModal = async function() {
+                const session = loadSession();
+                const allCourses = await api.fetchCourses();
+                const instructorCourses = allCourses.filter(course => course.instructor.toLowerCase() === session.name.toLowerCase());
+                const courseOptions = instructorCourses.map(course => `<option value="${course.id}">${course.title}</option>`).join('');
+                
+                const dynamicHtml = `
+                    <form id="upload-grades-form" class="space-y-4 text-left">
+                        <div>
+                            <label class="block text-sm font-semibold">Course</label>
+                            <select id="grades-course-select" class="w-full mt-1 border rounded-md p-2" required>
+                                <option value="" disabled selected>-- Select a course --</option>
+                                ${courseOptions}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold">Student Name & Email</label>
+                            <select id="student-name-email" class="w-full mt-1 border rounded-md p-2" required>
+                                <option value="" disabled selected>-- Select a student --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold">Assessment Type</label>
+                            <select id="assessment-type" class="w-full mt-1 border rounded-md p-2" required>
+                                <option value="Individual Assignments">Individual Assignments</option>
+                                <option value="Practical Work">Practical Work</option>
+                                <option value="Test One">Test One</option>
+                                <option value="Test Two">Test Two</option>
+                                <option value="Final Examination">Final Examination</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold">Grade (0-100)</label>
+                            <input type="number" id="grade-value" class="w-full mt-1 border rounded-md p-2" min="0" max="100" required>
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-full hover:bg-green-700">Submit Grade</button>
+                    </form>
+                `;
+                showModal('Upload Learner Assessments', 'Enter a student\'s grade for a specific assessment.', dynamicHtml);
+
+                const courseSelect = document.getElementById('grades-course-select');
+                const studentSelect = document.getElementById('student-name-email');
+
+                courseSelect.addEventListener('change', async (e) => {
+                    const courseId = e.target.value;
+                    const students = await api.getEnrolledStudents(courseId);
+                    studentSelect.innerHTML = `<option value="" disabled selected>-- Select a student --</option>`;
+                    students.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.email; // Use email as identifier
+                        option.textContent = `${student.name} (${student.email})`;
+                        studentSelect.appendChild(option);
+                    });
+                });
+
+                document.getElementById('upload-grades-form').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const courseId = courseSelect.value;
+                    const studentEmail = studentSelect.value;
+                    const assessmentType = document.getElementById('assessment-type').value;
+                    const gradeValue = document.getElementById('grade-value').value;
+
+                    if (!studentEmail || !courseId || !assessmentType || gradeValue === "") {
+                        showModal('Error', 'Please fill all fields.');
+                        return;
+                    }
+
+                    showModal('Uploading Grades...', 'Please wait...');
+                    const allCourses = await api.fetchCourses();
+                    const course = allCourses.find(c => c.id === courseId);
+                    
+                    const gradesPayload = {
+                        studentEmail,
+                        courseId,
+                        courseTitle: course.title,
+                        grades: [{ type: assessmentType, grade: parseInt(gradeValue), date: new Date().toLocaleString() }]
+                    };
+
+                    const response = await api.uploadGrades(gradesPayload);
+                    if(response.success) {
+                        showModal('Success!', response.message);
+                    } else {
+                        showModal('Error!', 'Failed to upload grades. Please try again.');
+                    }
+                });
+            }
+
+            window.showInstructorMaterialUploadModal = async function() {
+                const session = loadSession();
+                const allCourses = await api.fetchCourses();
+                const instructorCourses = allCourses.filter(course => course.instructor.toLowerCase() === session.name.toLowerCase());
+                const courseOptions = instructorCourses.map(course => `<option value="${course.id}">${course.title}</option>`).join('');
+
+                document.getElementById('instructor-upload-course-select').innerHTML = `<option value="" disabled selected>-- Choose a course --</option>` + courseOptions;
+                
+                instructorMaterialUploadModal.classList.remove('hidden');
+                instructorMaterialUploadModal.classList.add('flex');
+            };
+
+            instructorMaterialUploadModalClose.addEventListener('click', () => {
+                instructorMaterialUploadModal.classList.add('hidden');
+                instructorUploadForm.reset();
+            });
+
+            instructorUploadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const courseId = document.getElementById('instructor-upload-course-select').value;
+                const fileInput = document.getElementById('instructor-upload-file');
+                if(!fileInput.files[0]){ showModal('Upload Failed','Please select a file to upload.'); return; }
+
+                const fileDetails = {
+                    uploadedBy: loadSession().name, // Instructor's name
+                    courseId: courseId,
+                    fileName: fileInput.files[0].name,
+                    timestamp: new Date().toISOString()
+                };
+                
+                showModal('Uploading...', 'Please wait while your material is uploaded.');
+                const response = await api.uploadMaterial(fileDetails);
+                
+                if (response.success) {
+                    showModal('Upload Successful!', response.message);
+                    instructorMaterialUploadModal.classList.add('hidden');
+                    instructorUploadForm.reset();
+                } else {
+                    showModal('Upload Failed', 'There was an error uploading your file. Please try again.');
+                }
+            });
+
+
+            // --- SNARM Page Logic ---
+            async function renderSNARMPage() {
+                const session = loadSession();
+                const snarmContent = document.getElementById('snarm-content');
+                if (!session || session.role !== 'student') {
+                    snarmContent.innerHTML = `<p class="text-center text-gray-500">Please log in as a student to view your academic records.</p>`;
+                    return;
+                }
+
+                showModal('Loading...', 'Fetching your academic records...');
+                const studentGrades = await api.getStudentGrades(session.email);
+                const allCourses = await api.fetchCourses();
+                
+                let htmlContent = '';
+                if (studentGrades.length === 0) {
+                    htmlContent = `<p class="text-center text-gray-500">No academic records found yet. Grades will appear here after your instructor uploads them.</p>`;
+                } else {
+                    htmlContent = await Promise.all(studentGrades.map(async gradeRecord => { // Use Promise.all for async operations in map
+                        const course = allCourses.find(c => c.id === gradeRecord.courseId);
+                        const courseAssessmentBreakdown = course ? course.assessment : {};
+                        
+                        let gradesHtml = gradeRecord.grades.map(g => {
+                            const weight = courseAssessmentBreakdown[g.type] || 0;
+                            const weightedScore = (g.grade * weight) / 100;
+                            return `
+                                <li class="flex justify-between items-center py-2 border-b last:border-b-0">
+                                    <span class="font-semibold">${g.type} (${weight}%):</span>
+                                    <span>${g.grade}% (${weightedScore.toFixed(2)} pts)</span>
+                                </li>
+                            `;
+                        }).join('');
+
+                        const totalScore = gradeRecord.grades.reduce((sum, g) => {
+                            const weight = courseAssessmentBreakdown[g.type] || 0;
+                            return sum + (g.grade * weight) / 100;
+                        }, 0);
+                        
+                        const gpa = convertPercentageToGPA(totalScore);
+                        const { grade, comment } = getGradeComment(totalScore);
+                        
+                        const hasCertProcessed = await api.hasProcessedCertificate(session.email, gradeRecord.courseId);
+                        const certificateButtonHtml = hasCertProcessed ? 
+                            `<button class="bg-purple-600 text-white px-4 py-2 rounded-full font-bold hover:bg-purple-700 transition" onclick="downloadCertificate('${gradeRecord.courseId}')">Download Certificate</button>` :
+                            `<span class="text-sm text-gray-500">Certificate not yet processed.</span>`;
+
+
+                        return `
+                            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                                <div class="flex justify-between items-center mb-4 border-b pb-4">
+                                    <h3 class="text-2xl font-bold text-green-700">${gradeRecord.courseTitle}</h3>
+                                    <div class="flex space-x-2">
+                                        <button class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition" onclick="downloadTranscript('${gradeRecord.courseId}')">Download Transcript</button>
+                                        ${certificateButtonHtml}
+                                    </div>
+                                </div>
+                                <ul class="text-gray-700">
+                                    ${gradesHtml}
+                                </ul>
+                                <div class="mt-4 pt-4 border-t-2 border-dashed">
+                                    <p class="text-xl font-bold flex justify-between mb-2">
+                                        <span>Total Score:</span>
+                                        <span class="text-green-800">${totalScore.toFixed(2)}%</span>
+                                    </p>
+                                     <p class="text-xl font-bold flex justify-between mb-2">
+                                        <span>Grade:</span>
+                                        <span class="text-green-800">${grade}</span>
+                                    </p>
+                                    <p class="text-xl font-bold flex justify-between text-green-800">
+                                        <span>GPA:</span>
+                                        <span>${gpa.toFixed(1)} / 4.0</span>
+                                    </p>
+                                    <p class="text-md mt-2 text-gray-600">
+                                        <span class="font-bold">Comment:</span> ${comment}
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                    }));
+                    htmlContent = htmlContent.join(''); // Join the array of HTML strings
+                }
+                snarmContent.innerHTML = htmlContent;
+                messageModal.classList.add('hidden'); // Hide modal after loading
+            }
+            
+            // --- Transcript Download Function (New) ---
+            window.downloadTranscript = async function(courseId) {
+                const session = loadSession();
+                const course = (await api.fetchCourses()).find(c => c.id === courseId);
+                const studentGrades = (await api.getStudentGrades(session.email)).find(g => g.courseId === courseId);
+
+                if (!course || !studentGrades) {
+                    return alert("Error: Could not find course or grade data.");
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Add logo
+                doc.addImage(logoBase64, 'JPEG', 15, 10, 30, 15);
+                
+                doc.setFontSize(18);
+                doc.setTextColor(2, 119, 189); // A shade of blue
+                doc.text("SOMA-NASI ONLINE EDUCATION CENTER", 105, 20, null, null, "center");
+                doc.setFontSize(12);
+                doc.setTextColor(0,0,0);
+                doc.text("Academic Transcript", 105, 27, null, null, "center");
+                doc.text("------------------------------------------------------------------------------------------------------------------------------------", 10, 32);
+
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Student Name: `, 15, 45);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`${session.name}`, 50, 45);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Email: `, 15, 52);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`${session.email}`, 50, 52);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Course: `, 15, 59);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`${course.title}`, 50, 59);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Instructor: `, 15, 66);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`${course.instructor}`, 50, 66);
+                doc.text("------------------------------------------------------------------------------------------------------------------------------------", 10, 71);
+
+                const tableData = studentGrades.grades.map(g => {
+                    const weight = course.assessment[g.type];
+                    const weightedScore = (g.grade * weight) / 100;
+                    return [g.type, `${g.grade}%`, `${weight}%`, `${weightedScore.toFixed(2)}%`];
+                });
+
+                const totalScore = studentGrades.grades.reduce((sum, g) => {
+                    const weight = course.assessment[g.type] || 0;
+                    return sum + (g.grade * weight) / 100;
+                }, 0);
+                
+                const gpa = convertPercentageToGPA(totalScore);
+                const { grade, comment } = getGradeComment(totalScore);
+
+
+                doc.autoTable({
+                    startY: 75,
+                    head: [['Assessment Type', 'Score', 'Weight', 'Weighted Score']],
+                    body: tableData,
+                    theme: 'striped',
+                    styles: { fontSize: 10 },
+                    headStyles: { fillColor: [2, 119, 189] }
+                });
+
+                const finalY = doc.lastAutoTable.finalY + 10;
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Total Score: ${totalScore.toFixed(2)}%`, 15, finalY);
+                doc.text(`Grade: ${grade}`, 15, finalY + 7);
+                doc.text(`GPA: ${gpa.toFixed(1)} / 4.0`, 15, finalY + 14);
+                doc.text(`Comment: ${comment}`, 15, finalY + 21);
+
+                doc.save(`${session.name}_${course.id}_transcript.pdf`);
+                showModal('Download Complete', 'Your academic transcript has been generated and downloaded.');
+            };
+
+            // --- Certificate Download Function (Updated) ---
+            window.downloadCertificate = async function(courseId) {
+                const session = loadSession();
+                const course = (await api.fetchCourses()).find(c => c.id === courseId);
+                const studentGrades = (await api.getStudentGrades(session.email)).find(g => g.courseId === courseId);
+
+                if (!course || !studentGrades) {
+                    return alert("Error: Could not find course or grade data for certificate.");
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: 'landscape', // Landscape for certificate
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // Add a border
+                doc.setDrawColor(0, 128, 0); // Green color
+                doc.setLineWidth(5);
+                doc.rect(5, 5, 287, 200); // Border around the page (A4 landscape: ~297x210mm)
+                
+                // Add Logo
+                doc.addImage(logoBase64, 'JPEG', 135, 15, 30, 15);
+
+                // Platform Name
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(22);
+                doc.setTextColor(0, 128, 0);
+                doc.text("SOMA-NASI ONLINE EDUCATION CENTER", doc.internal.pageSize.width / 2, 40, { align: "center" });
+
+                // Title
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(36);
+                doc.setTextColor(0, 128, 0); // Green text
+                doc.text("CERTIFICATE OF COMPLETION", doc.internal.pageSize.width / 2, 60, { align: "center" });
+
+                doc.setFontSize(18);
+                doc.setTextColor(0, 0, 0); // Black text
+                doc.text("This certifies that", doc.internal.pageSize.width / 2, 85, { align: "center" });
+
+                doc.setFont('times', 'italic');
+                doc.setFontSize(48);
+                doc.setTextColor(0, 0, 128); // Dark blue for name
+                doc.text(session.name.toUpperCase(), doc.internal.pageSize.width / 2, 110, { align: "center" });
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(18);
+                doc.setTextColor(0, 0, 0);
+                doc.text("has successfully completed the course in", doc.internal.pageSize.width / 2, 130, { align: "center" });
+
+                doc.setFont('times', 'italic');
+                doc.setFontSize(30);
+                doc.setTextColor(128, 0, 0); // Maroon for course title
+                doc.text(course.title, doc.internal.pageSize.width / 2, 150, { align: "center" });
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(14);
+                doc.setTextColor(0, 0, 0);
+
+                // Signatures
+                doc.text(`Instructor: ${course.instructor}`, 40, 175);
+                doc.text(`Manager: Bwire Makaro`, doc.internal.pageSize.width - 40, 175, { align: "right" });
+                
+                doc.line(40, 180, 100, 180); // Line for instructor signature
+                doc.line(doc.internal.pageSize.width - 100, 180, doc.internal.pageSize.width - 40, 180); // Line for manager signature
+
+                doc.text("Date Issued:", 40, 195);
+                doc.text(`${new Date().toLocaleDateString()}`, 70, 195);
+
+                doc.save(`${session.name}_${course.id}_certificate.pdf`);
+                showModal('Download Complete', 'Your certificate has been generated and downloaded.');
+            };
+
+
+            // --- Navigation and UI Handlers ---
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.target.getAttribute('href').substring(1);
+                    const session = loadSession();
+                    if (!session) return; // If no session, do nothing on nav click
+
+                    if (session.role === 'student') {
+                        if (targetId === 'snarm') renderSNARMPage();
+                        showSection(targetId);
+                    } else if (session.role === 'admin') {
+                        if (targetId === 'admin-dashboard') {
+                            showSection('admin-dashboard');
+                            // Ensure the correct tab is active when navigating to the dashboard
+                            adminUploadsTab.classList.add('bg-green-600', 'text-white');
+                            adminPortfoliosTab.classList.remove('bg-green-600', 'text-white');
+                            adminUploadsContainer.classList.remove('hidden');
+                            adminPortfoliosContainer.classList.add('hidden');
+                        } else { // Admin trying to navigate to non-admin sections
+                             showModal('Access Denied', 'Admins can only access the Admin Dashboard.');
+                        }
+                    } else if (session.role === 'instructor') {
+                        if (targetId === 'instructor-dashboard') {
+                            showSection('instructor-dashboard');
+                        } else { // Instructor trying to navigate to non-instructor sections
+                             showModal('Access Denied', 'Instructors can only access the Instructor Dashboard.');
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e){
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            document.getElementById('course-list').addEventListener('click', (e) => {
+                const card = e.target.closest('div.bg-white');
+                const enrollButton = e.target.closest('button');
+                // Only trigger course details if clicked on card itself, not the enroll button
+                if (card && !enrollButton) {
+                    const courseTitle = card.querySelector('h2').textContent;
+                    const course = coursesData[courseTitle];
+                    if (course) {
+                        renderCourseDetails(course);
+                        document.getElementById('courses-section').classList.add('hidden');
+                        document.getElementById('course-details').classList.remove('hidden');
+                    }
+                }
+            });
+
+            backToCoursesButton.addEventListener('click', () => {
+                document.getElementById('course-details').classList.add('hidden');
+                document.getElementById('courses-section').classList.remove('hidden');
+            });
+
+            async function renderCourseDetails(course) {
+                const session = loadSession();
+                // Materials are always accessible as enrollment is free
+                
+                const materialsHtml = course.materials.map(mat => `<li>- ${mat}</li>`).join('');
+                const assessmentHtml = Object.entries(course.assessment).map(([key, value]) => `<li>${key}: ${value}%</li>`).join('');
+
+                const contentHtml = `
+                    <h2 class="text-3xl font-bold text-green-700 mb-4">${course.title}</h2>
+                    <p class="text-gray-600 text-lg mb-4">${course.description}</p>
+                    <div class="bg-gray-100 p-6 rounded-lg mb-6">
+                        <h3 class="text-xl font-bold mb-2">Instructor: ${course.instructor}</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-green-200 text-green-800 rounded-full px-4 py-2 font-semibold">Online</div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-lg mb-6">
+                        <h3 class="text-xl font-bold mb-2">Course Materials</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            ${materialsHtml}
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">Assessment Breakdown</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            ${assessmentHtml}
+                        </ul>
+                    </div>
+                `;
+                courseDetailsContent.innerHTML = contentHtml;
+            }
+
+            // Modal handling
+            window.showModal = function(title, message, dynamicHtml = '') {
+                modalTitle.textContent = title;
+                modalMessage.innerHTML = message;
+                modalDynamic.innerHTML = dynamicHtml;
+                messageModal.classList.remove('hidden');
+                messageModal.classList.add('flex');
+            }
+
+            modalClose.addEventListener('click', () => {
+                messageModal.classList.add('hidden');
+            });
+
+            // Initial setup
+            async function initializeApp() {
+                await renderCourses();
+                const session = loadSession();
+                if(session){
+                    showMainContent(session);
+                } else {
+                    loginScreen.classList.remove('hidden');
+                }
+            }
+            initializeApp();
+        });
+    </script>
+</body>
+</html>
